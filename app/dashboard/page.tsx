@@ -1,33 +1,23 @@
 import BlogPost from "@/components/BlogPost"
 import { buttonVariants } from "@/components/ui/button"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
+import type { BlogPost as BlogPostType } from "@prisma/client"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { prisma } from "../utils/db"
 
-type BlogPostData = {
-  id: string;
-  title: string;
-  content: string;
-  imageUrl: string;
-  authorId: string;
-  authorName: string;
-  authorImage: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
 
-const getData = async (userId: string): Promise<BlogPostData[]> => {
-  const data = await prisma.blogPost.findMany({
-    where: {
-      authorId: userId
-    },
-    orderBy: {
-      createdAt: 'desc'
-    }
-  });
-  return data;
-};
+const  getData = async(userId:string)=>{
+     const data = await prisma.blogPost.findMany({
+      where:{
+        authorId:userId
+      },
+      orderBy:{
+        createdAt:'desc'
+      }
+     })
+     return data
+}
 
 const DashboardRoute = async() => {
     const {getUser} = getKindeServerSession()
@@ -37,7 +27,8 @@ const DashboardRoute = async() => {
     throw new Error("User not authenticated")
 }
 
-    const data = await  getData(user?.id);
+const data: BlogPostType[] = await getData(user?.id);
+
 
 
     if(!user){
@@ -57,8 +48,9 @@ const DashboardRoute = async() => {
 
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                {
-                data.map((item: BlogPostData) => {
-                  return <BlogPost data={item} key={item.id} />
+                data.map((item: BlogPostType)=>{
+                  return <BlogPost  data={item} key={item.id}/>
+                
                 })
                }
     </div>
