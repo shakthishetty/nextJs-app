@@ -1,4 +1,3 @@
-
 import BlogPost from "@/components/BlogPost";
 import { buttonVariants } from "@/components/ui/button";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -24,10 +23,10 @@ export default async function DashboardRoute() {
   const user = await getUser();
 
   if (!user?.id) {
-    // You can redirect, throw, or return a message here
     return <div>User not found.</div>;
   }
-  const data = await getData(user?.id);
+
+  const data = await getData(user.id);
 
   return (
     <div>
