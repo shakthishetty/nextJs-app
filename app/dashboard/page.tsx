@@ -1,11 +1,11 @@
 import BlogPost from "@/components/BlogPost";
 import { buttonVariants } from "@/components/ui/button";
+import type { BlogPost as BlogPostType } from "@/lib/generated/prisma"; // ✅ Correct path here
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import type { BlogPost as BlogPostType } from "@prisma/client"; // ✅ Import BlogPost type from Prisma
 import Link from "next/link";
 import { prisma } from "../utils/db";
 
-// ✅ Add return type: Promise<BlogPostType[]>
+// Type the return value correctly
 async function getData(userId: string): Promise<BlogPostType[]> {
   await new Promise((resolve) => setTimeout(resolve, 2000));
   const data = await prisma.blogPost.findMany({
